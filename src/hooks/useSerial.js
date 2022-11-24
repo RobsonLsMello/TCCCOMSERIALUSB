@@ -11,13 +11,22 @@ exports.useSerial = (
     }) => {
     const [devices, setResult] = useState([]);
     const connectedDevice = useRef(null);
-
+    
     useEffect(() => {
         (async () => {
-            const devicesConnected = await UsbSerialManager.list()
-            console.log(devicesConnected)
-            setResult(devicesConnected);
-        })
+            console.log('LEGA2')
+            try{
+                const devicesConnected = await UsbSerialManager.list()
+                console.log(devicesConnected)
+                setResult(devicesConnected);
+            }
+            catch(e){
+                console.log(e)
+            }
+            
+            
+
+        })()
     }, [])
 
     const requestPermission = useCallback(
@@ -26,33 +35,39 @@ exports.useSerial = (
     )
 
     const connect = useCallback(
-        async (deviceId) => {
-            const device = await UsbSerialManager.open(
-                deviceId,
-                options
-            );
-            connectedDevice.current = device
+        async (deviceId, callback) => {
+            try{
+                const device = await UsbSerialManager.open(
+                    deviceId,
+                    options
+                );
+                console.log(UsbSerialManager.hasPermission ? "Tem permissão":"Não Tem permissão")
+                connectedDevice.current = device;
+                connectedDevice.current.onReceived(callback);
+                connectedDevice.current.listeners.push(callback);
+                console.log("conectou");
+            }
+            catch(e){
+                console.log(e);
+            }
+            console.log(connectedDevice)
         },
         [connectedDevice]
     )
 
     const write = useCallback(async (hexString) => {
-        if (!connectedDevice?.current?.deviceId) throw new Error("no connected device")
-        return connectedDevice.current.send(hexString)
+        connectedDevice.current.send(hexString).then(data => console.log(data)).catch(err => console.log(err));
     }, [])
 
-    useEffect(() => {
-        const listener = connectedDevice?.current?.onReceived?.(readCallback)
+    const setReadListener = useCallback(async (callback) =>{
 
-        return () => {
-            listener?.remove?.()
-        }
-    }, [connectedDevice, readCallback]);
+    }, [] )
 
     return {
         requestPermission,
         connect,
         devices,
-        write
+        write,
+        setReadListener
     }
 }

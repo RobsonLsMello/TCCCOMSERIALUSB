@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useState, useEffect } from "react";
 import { Text, View,SafeAreaView , ScrollView , PermissionsAndroid, TouchableHighlight, Alert, DeviceEventEmitter } from 'react-native';
 import FS from 'react-native-fs';
-import { RNSerialport, definitions, actions } from "react-native-serialport";
 import { useSerial } from "../hooks/useSerial";
 import Connection from './components/connection';
 
@@ -89,6 +88,7 @@ var onError = (error)=> {
 console.error(error);
 }
 var onReadData = (data) => {
+  Alert.alert("Texto", data.data)
     console.log(data)
 }
 
@@ -101,19 +101,15 @@ function FsTest({navigation}){
     devices,
     requestPermission,
     connect,
-    write
+    write,
+    setReadListener
   } = useSerial(onReadData);
 
     useEffect(() => {       
       requisitarPermissoesDeLeitura();
       requisitarPermissoesDeEscrita();
-      RNSerialport.startUsbService() //necessário para poder começar o processo de leitura
-      RNSerialport.setReturnedDataType(definitions.RETURNED_DATA_TYPES.INTARRAY); 
-      RNSerialport.setAutoConnect(false);
-      RNSerialport.setInterface(-1); // não sei do que isso se trata
-
-      DeviceEventEmitter.addListener(actions.ON_READ_DATA, onReadData);
-      DeviceEventEmitter.addListener(actions.ON_ERROR, onError);
+      //DeviceEventEmitter.addListener(actions.ON_READ_DATA, onReadData);
+      //DeviceEventEmitter.addListener(actions.ON_ERROR, onError);
     }, []);
 
     return(
@@ -150,45 +146,27 @@ function FsTest({navigation}){
                 Aqui já vem a parte pra iniciar a conexão na Lib direcionada para a porta serial
                 Aqui está funcionando, amém
               */
-              RNSerialport.getDeviceList().then(async (response) => {
-
-                if(response.length == 0) {
-                  Alert.alert("Erro", "Nenhum despositivo connectado")
-                  Alert.alert("Erro", "Conexão" + await RNSerialport.isOpen())
-                  return;
-                }
-                else{
-                  RNSerialport.isSupported(response[0].name)
-                  .then(data => {Alert.alert("Status isSupported ", JSON.stringify(data))})
-                  .catch(err => {Alert.alert("Erro isSupported ", JSON.stringify(err))});
-                  RNSerialport.isServiceStarted()
-                  .then(data => {Alert.alert("Status isServiceStarted", JSON.stringify(data))})
-                  .catch(err => {Alert.alert("Erro isServiceStarted ", JSON.stringify(err))});
-                  try {
-                    Alert.alert("Itens", JSON.stringify(response[0]))//list
-                    
-  
-                    RNSerialport.connectDevice(response[0].name, 9600);
-                    RNSerialport.isOpen()
-                    .then(data => {Alert.alert("Status isOpen", JSON.stringify(data))})
-                    .catch(err => {Alert.alert("Erro isOpen ", JSON.stringify(err))});
-                    
-                    Alert.alert("status", "Conectado"); 
-
-                  } catch (err) {
-                    Alert.alert("erro catch connect", JSON.stringify(err))
-                  }
-                  
-                }
-              }).catch(err => {Alert.alert("erro", JSON.stringify(err))});
-            }}>
+                let deviceEscolhido = devices[0].deviceId;
+                requestPermission(deviceEscolhido);
+              }}>
+                <Text>Permissão</Text>
+            </TouchableHighlight>
+            <TouchableHighlight onPress={async () => {
+             /*
+                Aqui já vem a parte pra iniciar a conexão na Lib direcionada para a porta serial
+                Aqui está funcionando, amém
+              */
+                let deviceEscolhido = devices[0].deviceId;
+                connect(deviceEscolhido, onReadData);
+              }}>
                 <Text>Conectar</Text>
             </TouchableHighlight>
             <TouchableHighlight onPress={async () => {
             /*
                 botão para mandar o texto na lib da porta serial, até ai aparentemente tudo certo.
               */
-              RNSerialport.writeString("getPonto 0")
+                await write("6F6C61")
+
             }}>
             <Text>Mandar Texto</Text>
             </TouchableHighlight>

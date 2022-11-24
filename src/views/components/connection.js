@@ -4,7 +4,7 @@
  *
  * @format
  * @flow
- */
+ *
 
  import React, { Component } from "react";
  import {
@@ -447,4 +447,4 @@
    }
  });
  
- export default ManualConnection;
+ export default ManualConnection;*/
