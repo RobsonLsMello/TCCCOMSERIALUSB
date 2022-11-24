@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
-import com.melihyarikkaya.rnserialport.RNSerialportPackage;
 import com.rnfs.RNFSPackage;
 import com.polidea.reactnativeble.BlePackage;
 import com.polidea.reactnativeble.BlePackage;
