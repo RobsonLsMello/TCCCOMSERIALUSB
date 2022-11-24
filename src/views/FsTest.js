@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Text, View,SafeAreaView , ScrollView , PermissionsAndroid, TouchableHighlight, Alert, DeviceEventEmitter } from 'react-native';
 import FS from 'react-native-fs';
 import { RNSerialport, definitions, actions } from "react-native-serialport";
+import { useSerial } from "../hooks/useSerial";
 import Connection from './components/connection';
 
 const requisitarPermissoesDeLeitura = async () => {
@@ -96,6 +97,13 @@ function FsTest({navigation}){
     const [arquivos, setArquivos] = useState([]);
     const [conteudo, setConteudo] = useState([]);
     
+  const {
+    devices,
+    requestPermission,
+    connect,
+    write
+  } = useSerial(onReadData);
+
     useEffect(() => {       
       requisitarPermissoesDeLeitura();
       requisitarPermissoesDeEscrita();
