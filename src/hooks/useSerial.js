@@ -2,7 +2,7 @@ const { useState, useEffect, useCallback, useRef } = require("react");
 const { UsbSerialManager, Parity } = require("react-native-usb-serialport-for-android")
 
 exports.useSerial = (
-    readCallback,
+    readCallback = () => { },
     options = {
         baudRate: 9600,
         parity: Parity.None,
@@ -47,7 +47,7 @@ exports.useSerial = (
         return () => {
             listener?.remove?.()
         }
-    }, [connectedDevice]);
+    }, [connectedDevice, readCallback]);
 
     return {
         requestPermission,
