@@ -1,0 +1,102 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.galerias.snack38ef1c6a8bd8496ea55db5dd186ae72a" xmlns:tools="http://schemas.android.com/tools">
+  <uses-permission-sdk-23 android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+  <uses-permission-sdk-23 android:name="android.permission.ACCESS_FINE_LOCATION"/>
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+  <uses-permission android:name="android.permission.BLUETOOTH"/>
+  <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+  <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
+  <uses-permission android:name="android.permission.BLUETOOTH_SCAN" tools:targetApi="31"/>
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+  <uses-permission android:name="android.permission.VIBRATE"/>
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="android.permission.MANAGE_USB" />    
+  <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
+  
+  <uses-sdk android:minSdkVersion="18" />
+  <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
+  <uses-feature android:name="android.hardware.usb.host" android:required="true" />  
+  <queries>
+    <intent>
+      <action android:name="android.intent.action.VIEW"/>
+      <category android:name="android.intent.category.BROWSABLE"/>
+      <data android:scheme="https"/>
+    </intent>
+  </queries>
+  <application android:name=".MainApplication" android:requestLegacyExternalStorage="true"  android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:allowBackup="true" android:theme="@style/AppTheme" android:usesCleartextTraffic="true">
+    <meta-data android:name="expo.modules.updates.ENABLED" android:value="true"/>
+    <meta-data android:name="expo.modules.updates.EXPO_SDK_VERSION" android:value="45.0.0"/>
+    <meta-data android:name="expo.modules.updates.EXPO_UPDATES_CHECK_ON_LAUNCH" android:value="ALWAYS"/>
+    <meta-data android:name="expo.modules.updates.EXPO_UPDATES_LAUNCH_WAIT_MS" android:value="0"/>
+    <meta-data android:name="expo.modules.updates.EXPO_UPDATE_URL" android:value="https://exp.host/@galerias/snack-38ef1c6a-8bd8-496e-a55d-b5dd186ae72a"/>
+    <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCNX-k3djRW0F0f_ttOfRJTmwMh1Ub3_fY"/>
+    <meta-data android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" android:resource="@xml/device_filter" />
+    <meta-data android:name="android.hardware.usb.action.USB_DEVICE_DETACHED" android:resource="@xml/device_filter" />
+    <meta-data android:name="android.hardware.usb.action.ACTION_USB_CONNECT" android:resource="@xml/device_filter" />
+    <meta-data android:name="android.hardware.usb.action.ACTION_USB_DISCONNECTED" android:resource="@xml/device_filter" />
+    <meta-data android:name="android.hardware.usb.action.ACTION_USB_PERMISSION_GRANTED" android:resource="@xml/device_filter" />
+    <meta-data android:name="android.hardware.usb.action.ACTION_USB_PERMISSION_NOT_GRANTED" android:resource="@xml/device_filter" />
+    <meta-data android:name="android.hardware.usb.action.ACTION_USB_ATTACHED" android:resource="@xml/device_filter" />
+    <meta-data android:name="android.hardware.usb.action.ACTION_USB_DETACHED" android:resource="@xml/device_filter" />
+    <meta-data android:name="android.hardware.usb.action.ACTION_USB_PERMISSION" android:resource="@xml/device_filter" />
+    <meta-data android:name="android.hardware.usb.action.ACTION_NO_USB" android:resource="@xml/device_filter" />
+
+    <activity android:name=".MainActivity" android:label="@string/app_name" android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode" android:launchMode="singleTask" android:windowSoftInputMode="adjustResize" android:theme="@style/Theme.App.SplashScreen" android:exported="true" android:screenOrientation="portrait">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+        <data android:scheme="com.galerias.snack38ef1c6a8bd8496ea55db5dd186ae72a"/>
+      </intent-filter>
+          <intent-filter>
+            <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            <action android:name="android.intent.action.INPUT_METHOD_CHANGED" />
+            <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+            <action android:name="android.hardware.usb.action.USB_DEVICE_DETACHED" />
+            <action android:name="android.hardware.usb.action.ACTION_USB_CONNECT"/>
+            <action android:name="android.hardware.usb.action.ACTION_USB_DISCONNECTED"/>
+            <action android:name="android.hardware.usb.action.ACTION_USB_PERMISSION_GRANTED"/>
+            <action android:name="android.hardware.usb.action.ACTION_USB_PERMISSION_NOT_GRANTED"/>
+            <action android:name="android.hardware.usb.action.ACTION_USB_ATTACHED"/>
+            <action android:name="android.hardware.usb.action.ACTION_USB_DETACHED"/>
+            <action android:name="android.hardware.usb.action.ACTION_USB_PERMISSION"/>
+            <action android:name="android.hardware.usb.action.ACTION_NO_USB"/>
+        </intent-filter>
+    </activity>
+    <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" android:exported="false"/>
+      <receiver android:name=".MyBroadcastReceiver"  android:exported="true">
+        <meta-data android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" android:resource="@xml/device_filter" />
+        <meta-data android:name="android.hardware.usb.action.USB_DEVICE_DETACHED" android:resource="@xml/device_filter" />
+        <meta-data android:name="android.hardware.usb.action.ACTION_USB_CONNECT" android:resource="@xml/device_filter" />
+        <meta-data android:name="android.hardware.usb.action.ACTION_USB_DISCONNECTED" android:resource="@xml/device_filter" />
+        <meta-data android:name="android.hardware.usb.action.ACTION_USB_PERMISSION_GRANTED" android:resource="@xml/device_filter" />
+        <meta-data android:name="android.hardware.usb.action.ACTION_USB_PERMISSION_NOT_GRANTED" android:resource="@xml/device_filter" />
+        <meta-data android:name="android.hardware.usb.action.ACTION_USB_ATTACHED" android:resource="@xml/device_filter" />
+        <meta-data android:name="android.hardware.usb.action.ACTION_USB_DETACHED" android:resource="@xml/device_filter" />
+        <meta-data android:name="android.hardware.usb.action.ACTION_USB_PERMISSION" android:resource="@xml/device_filter" />
+        <meta-data android:name="android.hardware.usb.action.ACTION_NO_USB" android:resource="@xml/device_filter" />
+        <intent-filter>
+            <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            <action android:name="android.intent.action.INPUT_METHOD_CHANGED" />
+            <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+            <action android:name="android.hardware.usb.action.USB_DEVICE_DETACHED" />
+            <action android:name="android.hardware.usb.action.ACTION_USB_CONNECT"/>
+            <action android:name="android.hardware.usb.action.ACTION_USB_DISCONNECTED"/>
+            <action android:name="android.hardware.usb.action.ACTION_USB_PERMISSION_GRANTED"/>
+            <action android:name="android.hardware.usb.action.ACTION_USB_PERMISSION_NOT_GRANTED"/>
+            <action android:name="android.hardware.usb.action.ACTION_USB_ATTACHED"/>
+            <action android:name="android.hardware.usb.action.ACTION_USB_DETACHED"/>
+            <action android:name="android.hardware.usb.action.ACTION_USB_PERMISSION"/>
+            <action android:name="android.hardware.usb.action.ACTION_NO_USB"/>
+        </intent-filter>
+    </receiver>
+  </application>
+
+</manifest>

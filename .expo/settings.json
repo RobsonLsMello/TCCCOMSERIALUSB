@@ -1,0 +1,10 @@
+{
+  "hostType": "lan",
+  "lanType": "ip",
+  "dev": true,
+  "minify": false,
+  "urlRandomness": null,
+  "https": false,
+  "scheme": "com.galerias.snack38ef1c6a8bd8496ea55db5dd186ae72a",
+  "devClient": true
+}

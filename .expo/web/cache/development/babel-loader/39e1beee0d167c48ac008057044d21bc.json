@@ -1,0 +1,1 @@
+{"ast":null,"code":"export { SwitchFull } from \"./SwitchFull\";","map":{"version":3,"names":["SwitchFull"],"sources":["C:/Users/ROBSONLUCASSILVEIRAM/Documents/tcc/node_modules/react-native-switch-full-custom/lib/index.js"],"sourcesContent":["export { SwitchFull } from './SwitchFull';\n"],"mappings":"AAAA,SAASA,UAAT"},"metadata":{},"sourceType":"module"}
