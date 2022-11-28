@@ -39,7 +39,7 @@
     "react-native-ble-plx": "^2.0.3",
     "react-native-custom-switch": "^1.0.7",
     "react-native-customisable-switch": "^0.1.0",
-    "react-native-date-picker": "*",
+    "react-native-date-picker": "^4.2.6",
     "react-native-datepicker": "*",
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "~2.2.1",

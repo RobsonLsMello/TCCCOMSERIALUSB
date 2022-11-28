@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from "react";
-import { Text, View,TextInput, StyleSheet, Image, TouchableHighlight, ScrollView, SafeAreaView} from 'react-native';
-import DatePicker from 'react-native-datepicker';
+import { Text, View,TextInput, ActivityIndicator, Image, TouchableHighlight, ScrollView, SafeAreaView} from 'react-native';
+import DatePicker from 'react-native-date-picker'
 import style from './css/dados'
 import Navbar from './components/navbar';
 import ResultadoCard from './components/resultadoCard';
@@ -18,16 +18,26 @@ var renderizarTrajetosBuscados = async (setTrajetos) =>{
   setTrajetos(trajetosObject)
 }
 
-var renderizarBatimetriasBuscados = async (setBatimetrias) =>{  
+var renderizarBatimetriasBuscados = async (nav, setBatimetrias, date = new Date(), trajetoBuscado = "") =>{  
+  setBatimetrias([[(<ActivityIndicator size="large"  key="ActivityIndicatorBatrimetria" color="#654AB4" />)]])
   let res = await controller.mostrarBatimetrias(AsyncStorage);
   let batrimetrias = [];
-  res.forEach((batrimetria, index) =>{
+  let result = res.filter(batrimetria =>{
+    let dataBatimetria = new Date(batrimetria.bathy.dateInit);
+    
+    let trajeto = trajetoBuscado == "" ? "" : batrimetria.route.name;
+    return ((dataBatimetria.getDate() == date.getDate() && dataBatimetria.getFullYear() == date.getFullYear() && dataBatimetria.getMonth() == date.getMonth()) && trajeto.match(trajetoBuscado))
+
+  })
+
+  result.forEach((batrimetria, index) =>{
     let date = new Date(batrimetria.bathy.dateInit);
     let formatDate = date.toLocaleDateString("pt-br").split("/");
     let formatTime = date.toLocaleTimeString("pt-br");
     let datetimeformat = `${formatDate[1]}/${formatDate[0]}/${formatDate[2]} ${formatTime}`;
-    batrimetrias.push((<ResultadoCard lugar={batrimetria.route.name} key={"B"+index} tempo="0" id={batrimetria.bathy._id} data={datetimeformat}/>))
+    batrimetrias.push((<ResultadoCard lugar={batrimetria.route.name} key={"B"+index} tempo="0" nav={nav} id={batrimetria.bathy._id} data={datetimeformat}/>))
   })
+
   setBatimetrias(batrimetrias)
 }
 
@@ -36,15 +46,17 @@ function Dados({navigation}){
   useEffect(() => {
     (async () => {
       await renderizarTrajetosBuscados(setTrajetos);
-      await renderizarBatimetriasBuscados(setBatimetrias);
+      await renderizarBatimetriasBuscados(navigation, setBatimetrias);
     })();
   }, []);
 
+
 const [isRegistro, setIsRegistro] = useState(true)
+const [conteudoTrajeto, setConteudoTrajeto] = useState("")
 const [date, setDate] = useState(new Date())
 const [open, setOpen] = useState(false)
-const [trajetos, setTrajetos] = useState([(<TrajetoCard nome="Trajeto" key={1} vezes={10} id={12341}></TrajetoCard>)])
-const [batimetrias, setBatimetrias] = useState([(<ResultadoCard lugar="Porto de Santos" key={1} tempo="20m01s" data="01/01/2022 15:03"/>)])
+const [trajetos, setTrajetos] = useState([(<ActivityIndicator size="large" key="ActivityIndicatorTrajeto" color="#654AB4" />)])
+const [batimetrias, setBatimetrias] = useState([(<ActivityIndicator size="large" key="ActivityIndicatorBatrimetria" color="#654AB4" />)])
 
     return(
   <View style={[]}> 
@@ -65,9 +77,9 @@ const [batimetrias, setBatimetrias] = useState([(<ResultadoCard lugar="Porto de 
                     style={style.imgCalendario}
                     source={require("../../assets/calendario.png")}
                   />
-                  
+                  <TextInput value={date.toString()} style={style.dtpRegistroOutside} onPressIn={()=>setOpen(true)}></TextInput>
                 </View>
-                <TextInput style={style.txtLocalizacao} placeholder="Localização"></TextInput> 
+                <TextInput style={style.txtLocalizacao} placeholder="Trajeto" onChangeText={setConteudoTrajeto} onEndEditing={data => renderizarBatimetriasBuscados(navigation, setBatimetrias, date, conteudoTrajeto)}></TextInput> 
               </View>
         : null}
 
@@ -97,7 +109,22 @@ const [batimetrias, setBatimetrias] = useState([(<ResultadoCard lugar="Porto de 
     <View style={[style.footer]}> 
       <Navbar nav={navigation} screen="Dados" />
     </View>
-
+    <DatePicker
+        modal={true}
+        theme='light'
+        androidVariant="nativeAndroid"
+        mode="date"
+        open={open}
+        date={date}
+        onConfirm={(date) => {
+          setOpen(false)
+          setDate(date)
+          renderizarBatimetriasBuscados(navigation, setBatimetrias, date)
+        }}
+        onCancel={() => {
+          setOpen(false)
+        }}
+      />
   </View>
   )
 }

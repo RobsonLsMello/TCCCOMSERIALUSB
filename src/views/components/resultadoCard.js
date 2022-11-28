@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableHighlight } from 'react-native';
 import vars from '../css/vars';
 
 export default function ResultadoCard(props) {
   return (
-    <View style={[styles.card, styles.colunas]}>
+    <TouchableHighlight onPress={()=>props.nav.navigate("batimetria", {bathyId: props.id})} style={{    marginBottom: vars.height * (16/926),}}>
+    <View style={[styles.card, styles.colunas]} >
       <View style={styles.pnlSimplificado}>
       <Image
         style={styles.pnlSimplificado}
@@ -26,6 +27,7 @@ export default function ResultadoCard(props) {
       </View>
       
     </View>
+    </TouchableHighlight>
   );
 }
 
@@ -42,7 +44,6 @@ const styles = StyleSheet.create({
   },
   card:{
     width: vars.width * (377/428),
-    marginBottom: vars.height * (16/926),
     minHeight: vars.height * (86/926),
     backgroundColor: vars.secondaryColor,
     paddingHorizontal: vars.width * (8/428),

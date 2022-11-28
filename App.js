@@ -17,6 +17,7 @@ import criarTrajeto from './src/views/criarTrajeto'
 import controle from './src/views/controle'
 import bluTest from './src/views/BluTest'
 import fsTest from './src/views/FsTest'
+import batimetria from './src/views/batimetria'
 
 
 
@@ -26,7 +27,11 @@ function App(){
  return(
  <NavigationContainer>
    <Stack.Navigator initialRouteName = "dados" screenOptions = {{headerShown: false}}> 
-
+   <Stack.Screen name = "batimetria" component = {batimetria} 
+    options = {{
+        headerShown: false,
+      }}
+    />
    <Stack.Screen name = "bluTest" component = {bluTest} 
     options = {{
         headerShown: false,

@@ -76,8 +76,12 @@ const style = StyleSheet.create({
     minHeight:vars.height * (161/926),
 
   },
-  resultadoScroll:{
+  resultado:{
     height:vars.height - vars.height * ((60 + 62 + 180)/926),
+
+  },
+  resultadoScroll:{
+    height:vars.height - vars.height * ((60 + 62 + 180 + 50)/926),
   },
   itemAtivo:{
     color:vars.primaryColor,
