@@ -165,7 +165,7 @@ function FsTest({navigation}){
             /*
                 botão para mandar o texto na lib da porta serial, até ai aparentemente tudo certo.
               */
-                await write("6F6C61")
+                await write("676574506f6e746f2030")
 
             }}>
             <Text>Mandar Texto</Text>

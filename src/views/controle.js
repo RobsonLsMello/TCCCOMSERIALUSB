@@ -12,9 +12,46 @@ import MapView from 'react-native-maps';
 import * as Location from 'expo-location';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { SwitchFull } from 'react-native-switch-full-custom';
+import { useSerial } from "../hooks/useSerial";
 
 function Controle({route, navigation}){
+  const {
+    devices,
+    requestPermission,
+    connect,
+    close,
+    write
+  } = useSerial(onReadData);
+  var onReadData = (data) => {
+    let res = ""
+    for (var n = 0; n < data.data.length; n += 2) {
+      res += String.fromCharCode(parseInt(data.data.substr(n, 2), 16));
+    }
+    res = res.trim();
+    console.log(res);
+  }
+  var conectar = async () =>{
+    if(bluetoothOnline){
+      setBluetoothStatus(false);
+      close();
+    }else{
+        requestPermission(devices[0].deviceId)
+        .then((data)=>{console.log(data);setPermissaoSerial(()=> true);})
+        .catch((err)=>{console.log(err); setPermissaoSerial(()=> false);})
+        .finally(async ()=>{
+          setConectandoSerial(()=> true)
+          setTimeout(async() => {
+            setConectandoSerial(()=>false)
+            let retorno = await connect(devices[0].deviceId, onReadData);
+            if(retorno != null){
+              setBluetoothStatus(true);
+            }
+          }, 1000);
+          
+        });
 
+      }
+    }
   var regiaoInicial = {
     latitude: -23.9660408,
     longitude: -46.3041324,
@@ -24,12 +61,19 @@ function Controle({route, navigation}){
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [bluetoothOnline, setBluetoothStatus] = useState(false);
+  const [conectandoSerial, setConectandoSerial] = useState(false);
+
   const [orientation, setOrientation] = useState(Dimensions.get('window').width < Dimensions.get('window').height? "portrait" : "landscape");
   const [isManual, setisManual] = useState(false);
   const [isVelocidade, setVelocidade] = useState(true);
   const [whichDirection, setWhichDirection] = useState(1);
   const trocarAuto = () => setisManual(previousState => !previousState);
   const trocarVelocidade = () => setVelocidade(previousState => !previousState);
+  const [ultimoComando, setUltimoComando] = useState("");
+
+  if(!bluetoothOnline){
+    (async () => await conectar())()
+  }
 
   useEffect(() => {
     (async () => {
@@ -88,7 +132,17 @@ function Controle({route, navigation}){
       <View  style={styleLD.switchManualHorizontal}>
         <SwitchFull
             value={isManual}
-            onValueChange={trocarAuto}
+            onValueChange={() => setisManual(modo =>{
+              modo = !modo;
+              if(modo){
+                write("setModo m", setUltimoComando);
+              }
+              else{
+                write("setModo a", setUltimoComando);
+              }
+              console.log(modo ? "Manual" :"Automático");
+              return modo;
+            })}
             disabled={false}
             activeText={'Manual'}
             inActiveText={'Automático'}
@@ -116,7 +170,10 @@ function Controle({route, navigation}){
         <View style={styleLD.direcao}>
           <TouchableHighlight 
             disabled={!isManual}  
-            onPress={() => setWhichDirection(0)} 
+            onPress={() => setWhichDirection( () =>{
+              write("girar e", setUltimoComando);
+              return 0;
+            })} 
             style={[styleLD.direcional, whichDirection == 0 ? {backgroundColor:vars.primaryColor}: {backgroundColor:vars.secondaryColor}]}
           >
             <Text style={[{fontWeight:"bold"}, whichDirection == 0 ? {color:vars.secondaryColor}: {color:vars.primaryColor}]}>{"◄"}</Text>
@@ -124,7 +181,10 @@ function Controle({route, navigation}){
 
           <TouchableHighlight 
             disabled={!isManual}  
-            onPress={() => setWhichDirection(1)} 
+            onPress={() => setWhichDirection( () =>{
+              write("girar p", setUltimoComando);
+              return 1;
+            })} 
             style={[styleLD.direcional, {},whichDirection == 1 ? {backgroundColor:vars.primaryColor}: {backgroundColor:vars.secondaryColor}]}
           >
             <Text style={[{fontWeight:"bold"}, whichDirection == 1 ? {color:vars.secondaryColor}: {color:vars.primaryColor}]}>{"▲"}</Text>
@@ -132,7 +192,10 @@ function Controle({route, navigation}){
 
           <TouchableHighlight 
             disabled={!isManual} 
-            onPress={() => setWhichDirection(2)} 
+            onPress={() => setWhichDirection( () =>{
+              write("girar d", setUltimoComando);
+              return 2;
+            })} 
             style={[styleLD.direcional, whichDirection == 2 ? {backgroundColor:vars.primaryColor}: {backgroundColor:vars.secondaryColor}]}
           >
             <Text style={[{fontWeight:"bold"}, whichDirection == 2 ? {color:vars.secondaryColor}: {color:vars.primaryColor}]} >{"►"}</Text>
@@ -142,7 +205,19 @@ function Controle({route, navigation}){
         <View style={styleLD.switchVertical}>
           <SwitchFull  
               value={isVelocidade}
-              onValueChange={() => isManual ? trocarVelocidade() : null}
+              onValueChange={() => setVelocidade(modo =>{
+                if(isManual){
+                  modo = !modo;
+                  if(modo){
+                    write("mover f", setUltimoComando);
+                  }
+                  else{
+                    write("mover p", setUltimoComando);
+                  }
+                  console.log(modo ? "frente" :"parar");
+                }
+                return modo;
+              })}
               disabled={false}
               activeText={'Parar'}
               inActiveText={'Frente'}

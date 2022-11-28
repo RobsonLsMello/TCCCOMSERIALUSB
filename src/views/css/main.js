@@ -34,6 +34,22 @@ const style = StyleSheet.create({
     paddingLeft: vars.width * (24/428),
     paddingTop:vars.height * (35/926),
   },
+  statusContainerPai:{
+    marginTop: - vars.height * (164/926),
+    height:vars.height - vars.height * (164/926),
+    width: vars.width,
+    alignItems: 'flex-end'
+  },
+  statusContainer:{
+    justifyContent:"space-between",
+    alignContent:"center",
+    alignItems:"center",
+    flexWrap: 'wrap', 
+    flexDirection:'row',
+    width: vars.width * (50/428),    
+    position:"relative",
+    height:vars.height - vars.height * (164/926),
+  },
   containerMain:{
     width: vars.width * (365/428),
     flexGrow: 1,
@@ -70,6 +86,12 @@ const style = StyleSheet.create({
   imgBluetooth:{
     width: vars.height * (40/926),
     height: vars.height * (40/926),
+  },
+  imgStatus:{
+    width: vars.height * (40/926),
+    height: vars.height * (40/926),
+    backgroundColor:"#FFF",
+    marginVertical:10
   },
   pnlDispositivo:{
     width: vars.width * (132/428),

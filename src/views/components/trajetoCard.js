@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { StyleSheet, Text, View, Pressable, Image } from 'react-native';
 import vars from '../css/vars';
 
 export default function ResultadoCard(props) {
@@ -7,7 +7,10 @@ export default function ResultadoCard(props) {
     return (
     <Pressable style={[styles.card, styles.colunas, id_trajeto == props.escolhido ? styles.btnEscolhido: null]} onPress={()=>{props.setarEscolhido(id_trajeto); ; props.setTrajetoSelecionado(props.trajeto); console.log(props.escolhido)}}>
       <View style={styles.pnlSimplificado}>
-        <Text>Visualização</Text>
+        <Image
+          style={styles.pnlSimplificado}
+          source={require("../../../assets/distance.png")}
+        />
       </View>
       <View style={styles.pnlInfos}>
         <View style={styles.colunas}>
@@ -17,9 +20,6 @@ export default function ResultadoCard(props) {
           <Text style={styles.lblPrimeiraInformacao}>Vezes Utilizado: </Text>
           <Text style={styles.lblSegundaInformacao}>{props.vezes}</Text>
         </View>
-        <Pressable style={styles.btnEditar} onPress={null}>
-            <Text style={styles.lblEditar}>Editar</Text>
-        </Pressable>
       </View>
       
     </Pressable>
@@ -65,7 +65,6 @@ const styles = StyleSheet.create({
   pnlSimplificado:{
     width: vars.width * (82/428),
     height: vars.height * (82/926),
-    backgroundColor:"#C4C4C4"
   },
   pnlInfos:{
     width: vars.width * (273/428),

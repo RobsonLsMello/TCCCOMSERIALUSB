@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, Modal, StyleSheet, Text, Pressable, View, SafeAreaView } from "react-native";
+import { ScrollView, Modal, StyleSheet, Text, Pressable, View, SafeAreaView, ActivityIndicator } from "react-native";
 import vars from '../css/vars';
 import controller from '../../controllers/dados'
 import TrajetoCard from '../components/trajetoCard';
@@ -16,7 +16,7 @@ var renderizarTrajetosBuscados = async (setTrajetos, setEscolhido, escolhido, se
   }
 
 const App = (props) => {
-    const [trajetos, setTrajetos] = useState([(<TrajetoCard nome="Trajeto" key={1} vezes={10} id={12341}></TrajetoCard>)])
+    const [trajetos, setTrajetos] = useState([(<ActivityIndicator size="large" key={1} color="#654AB4" />)])
     const [trajetosObject, setTrajetosObject] = useState([])
 
  

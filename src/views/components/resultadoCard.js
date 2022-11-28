@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import vars from '../css/vars';
 
 export default function ResultadoCard(props) {
   return (
     <View style={[styles.card, styles.colunas]}>
       <View style={styles.pnlSimplificado}>
-        <Text>Visualização simplificada</Text>
+      <Image
+        style={styles.pnlSimplificado}
+        source={require("../../../assets/topographic.png")}
+
+      />
       </View>
       <View style={styles.pnlInfos}>
         <View style={styles.colunas}>
@@ -49,7 +53,6 @@ const styles = StyleSheet.create({
   pnlSimplificado:{
     width: vars.width * (82/428),
     height: vars.height * (82/926),
-    backgroundColor:"#C4C4C4"
   },
   pnlInfos:{
     width: vars.width * (273/428),

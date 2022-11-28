@@ -14,10 +14,8 @@ exports.useSerial = (
     
     useEffect(() => {
         (async () => {
-            console.log('LEGA2')
             try{
                 const devicesConnected = await UsbSerialManager.list()
-                console.log(devicesConnected)
                 setResult(devicesConnected);
             }
             catch(e){
@@ -51,12 +49,22 @@ exports.useSerial = (
                 console.log(e);
             }
             console.log(connectedDevice)
+            return connectedDevice;
         },
         [connectedDevice]
     )
-
-    const write = useCallback(async (hexString) => {
-        connectedDevice.current.send(hexString).then(data => console.log(data)).catch(err => console.log(err));
+    const close = useCallback(
+        async () =>{
+            return await connectedDevice.current.close();
+        }, []
+    )
+    const write = useCallback(async (string = "", setUltimoComando) => {
+        let hexString = "";
+        for(let i = 0; i < string.length; i++){
+            hexString +=  string.charCodeAt(i).toString(16)
+        }
+        setUltimoComando(string);
+        connectedDevice.current.send(hexString + "0A").then(data => console.log(data)).catch(err => console.log(err));
     }, [])
 
     const setReadListener = useCallback(async (callback) =>{
@@ -68,6 +76,7 @@ exports.useSerial = (
         connect,
         devices,
         write,
+        close,
         setReadListener
     }
 }

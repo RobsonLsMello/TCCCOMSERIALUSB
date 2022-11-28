@@ -108,7 +108,7 @@ exports.simularPontos = () =>{
     return rotas({lat:-23.9625243,lon:-46.4074338}, {lat:-23.9615243,lon:-46.4064338});
 }
 
-exports.executarBatimetria = async (bluetoothDevice,  setInBatimetria, setProfundidade, setTempoBatimetria, setBatimetriaFinalizada,atualizarVisaoMapa) =>{  
+exports.executarBatimetria = async (bluetoothDevice,  setInBatimetria, setProfundidade, setTempoBatimetria, setBatimetriaFinalizada,atualizarVisaoMapa, writeSerial) =>{  
     dadosSalvos = [];
     setInBatimetria(batimetria => {
         atualizarVisaoMapa(true); 
@@ -121,28 +121,43 @@ exports.executarBatimetria = async (bluetoothDevice,  setInBatimetria, setProfun
     let simulacao = setInterval( () => {
         mili += 0.1;
         setTempoBatimetria(`${Math.floor(mili/60)}m${Math.floor(mili % 60)}s`);
-        y = -((x*x)/4)+(25*x);
+
+        y = 0;
+        x = 0;
+        z = 0;
         setProfundidade(y);
+        
         dadosSalvos.push(
             {latitude:z, longitude:x, profundidade: y, unidade:"metros"}
         );
-        //console.log({latitude:z, longitude:x, profundidade: y, unidade:"metros"})
-        x++;
-        if(x>100){
-            z++;
-            x=0;
-        }
-        if(z> 0){
-            clearInterval(simulacao)  
-            setBatimetriaFinalizada(true);
-        }
+        
+        /*
+        clearInterval(simulacao)  
+        setBatimetriaFinalizada(true);
+        */
         
     }, 100);
     
 }
 
-exports.salvarBatimetria = async (trajeto, AsyncStorage, setTempoBatimetria, setBatimetriaFinalizada, setInBatimetria) =>{
-    let lenght = dadosSalvos.length;
+exports.salvarBatimetria = async (trajeto, AsyncStorage, setTempoBatimetria, setBatimetriaFinalizada, setInBatimetria, dadosSalvos = [], setInDownload) =>{
+    setInDownload(true);
+    let deeps = dadosSalvos.map(dado =>{
+        try {
+            return {
+                "coordinate":{
+                    "type":"Point",
+                    "coordinates": [Number(dado.latitude), Number(dado.longitude)]
+                },
+                "value": Number(dado.profundidade),
+            }
+        } catch (error) {
+            return {}
+        }
+    })
+    await deep.cadastrarDeep(deeps, trajeto, AsyncStorage);
+    setInDownload(false);
+    /*let lenght = dadosSalvos.length;
     let indice = 0;
     let loop = setInterval(() => {
         deep.cadastrarDeep([dadosSalvos[indice].latitude, dadosSalvos[indice].longitude], trajeto, dadosSalvos[indice].profundidade, AsyncStorage);
@@ -152,7 +167,7 @@ exports.salvarBatimetria = async (trajeto, AsyncStorage, setTempoBatimetria, set
         else{
             clearInterval(loop);
         }
-    }, 500);
+    }, 500);*/
  
     setTempoBatimetria("0m0s");
     setBatimetriaFinalizada(false);

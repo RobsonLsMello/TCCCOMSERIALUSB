@@ -33,8 +33,7 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      },
-      "package": "com.galerias.snack38ef1c6a8bd8496ea55db5dd186ae72a"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
