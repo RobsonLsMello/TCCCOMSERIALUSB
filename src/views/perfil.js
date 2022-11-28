@@ -7,6 +7,7 @@ import Navbar from './components/navbar';
 import DataCardFlex from './components/dataCardFlex';
 import OpcaoMenu from './components/opcaoMenu';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import controller from './../controllers/dados'
 
 let setarDados = async (setNome) => {
   let nome = await AsyncStorage.getItem("@nome")
@@ -22,6 +23,23 @@ function Perfil({navigation}){
 
   useEffect(() => {
     setarDados(setNome);
+    (async ()=>{
+      let bathys = await controller.mostrarBatimetrias(AsyncStorage);
+      setBatimetrias(bathys.length);
+      let datearr = bathys.map((o) => new Date(o.bathy.dateInit));
+      let date = "";
+      datearr.forEach((dia, index) =>{
+        if(index == 0){
+          date = dia;
+        }else{
+          if(Date.parse(dia) > Date.parse(date)){
+            date = dia;
+          }
+        }
+      })
+      setUltimaBatimetria(`${new Date(date).getDate()}/${new Date(date).getMonth()}/${new Date(date).getFullYear()}`)
+      
+    })()
   }, []);
 
   
@@ -41,8 +59,8 @@ function Perfil({navigation}){
     <View style={[style.main, style.centerAll]}> 
       <View style={style.containerMain}>
         <View style={style.pnlDados}>
-          <DataCardFlex valor="2" titulo="Batimetrias Feitas:"></DataCardFlex>
-          <DataCardFlex valor="01/02/2022" titulo="Última Batimetria:"></DataCardFlex>
+          <DataCardFlex valor={batimetrias} titulo="Batimetrias Feitas:"></DataCardFlex>
+          <DataCardFlex valor={ultimaBatimetria} titulo="Última Batimetria:"></DataCardFlex>
         </View>
         <OpcaoMenu opcao="Configurações" screen="configuracao" nav={navigation} imagem={require("../../assets/gear.png")}/>
         <OpcaoMenu opcao="Notificação" screen="notificacao" nav={navigation} imagem={require("../../assets/bell.png")}/>

@@ -148,6 +148,12 @@ const style = StyleSheet.create({
   lblLegenda:{
     fontWeight:"bold",
     fontSize:vars.fontM
+  },
+  plot:{
+    width: vars.width,
+    height: vars.height,
+    position: "absolute",
+    zIndex: 1000
   }
 })
 

@@ -77,7 +77,7 @@ const [batimetrias, setBatimetrias] = useState([(<ActivityIndicator size="large"
                     style={style.imgCalendario}
                     source={require("../../assets/calendario.png")}
                   />
-                  <TextInput value={date.toString()} style={style.dtpRegistroOutside} onPressIn={()=>setOpen(true)}></TextInput>
+                  <TextInput value={date.toString()} style={style.dtpRegistroOutside}  onPressIn={()=>setOpen(true)}></TextInput>
                 </View>
                 <TextInput style={style.txtLocalizacao} placeholder="Trajeto" onChangeText={setConteudoTrajeto} onEndEditing={data => renderizarBatimetriasBuscados(navigation, setBatimetrias, date, conteudoTrajeto)}></TextInput> 
               </View>
@@ -86,10 +86,10 @@ const [batimetrias, setBatimetrias] = useState([(<ActivityIndicator size="large"
         <SafeAreaView style={style.resultado}>
           <ScrollView style={style.resultadoScroll}>
             <View style={!isRegistro ? {display:"none"} : null}>
-              {batimetrias}
+              {batimetrias.length > 0 ? batimetrias : <Text>Nenhuma batimeria encontrada</Text>}
             </View>
             <View style={isRegistro ? {display:"none"} : null}>
-              {trajetos}
+            {trajetos.length > 0 ? trajetos : <Text>Nenhum trajeto encontrado</Text>}
             </View>
           
             

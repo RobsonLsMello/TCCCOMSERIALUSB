@@ -26,7 +26,7 @@ const Stack = createStackNavigator()
 function App(){
  return(
  <NavigationContainer>
-   <Stack.Navigator initialRouteName = "dados" screenOptions = {{headerShown: false}}> 
+   <Stack.Navigator initialRouteName = "index" screenOptions = {{headerShown: false}}> 
    <Stack.Screen name = "batimetria" component = {batimetria} 
     options = {{
         headerShown: false,

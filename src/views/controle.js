@@ -72,7 +72,7 @@ function Controle({route, navigation}){
   const [ultimoComando, setUltimoComando] = useState("");
 
   if(!bluetoothOnline){
-    (async () => await conectar())()
+    (async () => {devices.length > 0 ? await conectar() : ""})()
   }
 
   useEffect(() => {

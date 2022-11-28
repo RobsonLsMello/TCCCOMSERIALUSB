@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import vars from '../css/vars';
 
 export default function DataCardFlex(props) {
   return (
     <View style={styles.card}>
       <Text style={styles.lblTitulo}>{props.titulo}</Text>
+      {props.valor != ""? 
       <Text style={styles.lblValor}>{props.valor}</Text>
+
+      :<ActivityIndicator size="small" key="ActivityIndicatorBatrimetria" color="#FFF" />}
     </View>
   );
 }
