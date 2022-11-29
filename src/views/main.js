@@ -204,7 +204,7 @@ function Main({route, navigation}){
           status = res.split(" ")[0];
           setstatusBat(()=> status == "OK" ? true : false);
           break;
-        case "statusConexão":
+        case "statusLora":
           status = res.split(" ")[0];
           setStatusConexao(()=> status == "OK" ? true : false);
 
@@ -384,7 +384,7 @@ function Main({route, navigation}){
 
   if(bluetoothOnline && loop == null){
     setFila(fila=>{fila.push("statusBat");return fila;})
-    setFila(fila=>{fila.push("statusConexão");return fila;})
+    setFila(fila=>{fila.push("statusLora");return fila;})
     setFila(fila=>{fila.push("statusMotor");return fila;})
     setFila(fila=>{fila.push("statusSonar");return fila;})
     setFila(fila=>{fila.push("statusGPS");return fila;})
@@ -400,6 +400,8 @@ function Main({route, navigation}){
                 if(!emEspera){
                   
                   write(comandoExecutado, setUltimoComando);
+                  comandos.shift();
+
                   status = true;
                 }
                 return status;
@@ -408,18 +410,17 @@ function Main({route, navigation}){
             }else{
               console.log("Comando inválido, passando para o próximo, aguarde")
             }
-            comandos.shift();
           }else{
             console.log("Aguardando novo comando");
           }
-          if(leituras == 60){
+          if(leituras == 30){
             comandos.push("statusMotor");
             comandos.push("statusSonar");
             comandos.push("statusGPS");
           }
-          if(leituras >= 120){
+          if(leituras >= 60){
             comandos.push("statusBat");
-            comandos.push("statusConexão");
+            comandos.push("statusLora");
             leituras = 0;
           }
           else

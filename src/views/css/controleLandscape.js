@@ -79,7 +79,9 @@ const style = StyleSheet.create({
   },
   switchManualHorizontal:{
     height: mainWitdh/4,
-    paddingTop: vars.width * (18/428)
+    paddingTop: vars.width * (18/428),
+    flexWrap: 'wrap', 
+    flexDirection:'row',
   },
   navegacaoInferior:{
     height: 3*mainWitdh/4,

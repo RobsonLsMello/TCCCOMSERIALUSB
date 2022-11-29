@@ -63,7 +63,6 @@ function Perfil({navigation}){
           <DataCardFlex valor={ultimaBatimetria} titulo="Última Batimetria:"></DataCardFlex>
         </View>
         <OpcaoMenu opcao="Configurações" screen="configuracao" nav={navigation} imagem={require("../../assets/gear.png")}/>
-        <OpcaoMenu opcao="Notificação" screen="notificacao" nav={navigation} imagem={require("../../assets/bell.png")}/>
         <OpcaoMenu opcao="Sair" screen="index" nav={navigation} imagem={require("../../assets/logout.png")}/>
       </View>
     </View>

@@ -8,7 +8,7 @@ exports.atrelarNomeEmail = async (AsyncStorage, nome, telefone, nav, setErros, p
     await AsyncStorage.setItem("@telefone", telefone);
     if(retorno.message == "Nome e telefone atualizados."){
         if(primeiroLogin)
-            nav.navigate("primeiroLogin")
+            nav.navigate("main")
         return true;
     }
     else{

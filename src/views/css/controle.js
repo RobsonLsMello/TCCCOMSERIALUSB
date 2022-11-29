@@ -8,7 +8,18 @@ const style = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-
+  btnBluetooth:{
+    marginRight: 20,
+    width: vars.width * (100/428),
+    height:vars.height * (72/926),
+    backgroundColor:vars.primaryColor,
+    justifyContent: 'center',
+    alignItems:"center"
+  },
+  imgBluetooth:{
+    width: vars.height * (40/926),
+    height: vars.height * (40/926),
+  },
   header:{
     width: vars.width,
     height:vars.height * (104/926),
