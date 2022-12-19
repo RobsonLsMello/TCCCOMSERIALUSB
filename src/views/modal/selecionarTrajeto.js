@@ -10,7 +10,7 @@ var renderizarTrajetosBuscados = async (setTrajetos, setEscolhido, escolhido, se
     let trajetos = await controller.mostrarTrajetos(AsyncStorage);
     let trajetosObject = [];
     trajetos.forEach((trajeto, index) =>{
-        trajetosObject.push((<TrajetoCard nome={`Trajeto ${index}`} key={index} vezes={0} trajeto={trajeto} id={trajeto._id} setTrajetoSelecionado={setTrajetoSelecionado} setarEscolhido={setEscolhido} escolhido={escolhido}></TrajetoCard>))
+        trajetosObject.push((<TrajetoCard nome={`${trajeto.name}`} key={index} vezes={0} trajeto={trajeto} id={trajeto._id} setTrajetoSelecionado={setTrajetoSelecionado} setarEscolhido={setEscolhido} escolhido={escolhido}></TrajetoCard>))
     })
     setTrajetos(trajetosObject);
   }

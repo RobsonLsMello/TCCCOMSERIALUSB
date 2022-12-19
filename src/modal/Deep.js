@@ -1,4 +1,4 @@
-const domain = "https://deep-analysis02.herokuapp.com";
+const domain = "http://192.168.15.10:8080";
 const token = require('./Token')
 const bathymetry = require('./Bathymetry')
 
@@ -21,7 +21,7 @@ exports.cadastrarDeep = async (deeps = [], rota_id, AsyncStorage) =>{
     const response = await fetch(`${domain}/deep/cadDeep`, requestOptions)
     
     const retorno = await response.json();
-    console.log(retorno);
+    
     return retorno;
 }
 

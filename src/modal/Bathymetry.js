@@ -1,4 +1,4 @@
-const domain = "https://deep-analysis02.herokuapp.com";
+const domain = "http://192.168.15.10:8080";
 const token = require('./Token')
 const rota = require('./Rota')
 
@@ -17,6 +17,7 @@ exports.cadastrarBathy = async (rota_id, AsyncStorage) =>{
     };
 
     const response = await fetch(`${domain}/bathymetry/cadBathy`, requestOptions)
+    
     const retorno = await response.json();
     return retorno.message._id;
 }

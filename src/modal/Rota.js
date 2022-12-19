@@ -1,4 +1,4 @@
-const domain = "https://deep-analysis02.herokuapp.com";
+const domain = "http://192.168.15.10:8080";
 const token = require('./Token')
 
 exports.cadastrarRota = async (lt, rt, lb, rb, AsyncStorage) =>{

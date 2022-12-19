@@ -98,8 +98,8 @@ function Controle({route, navigation}){
           setStatusGPS(()=> status == "OK" ? true : false);
 
           if(status == "OK"){
-            let lat = res.split(" ")[1];
-            let lon = res.split(" ")[2];
+            let lat = Number(res.split(" ")[1]);
+            let lon = Number(res.split(" ")[2]);
             setLatitude(() => lat);
             setLongitude(() => lon);
             setRegion(()=>{return {
